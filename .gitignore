@@ -1,0 +1,7 @@
+/data
+/datasets
+/cropped_images
+/cropped_images_processed
+/.venv
+/__pycache__
+.DS_Store
