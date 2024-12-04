@@ -1,18 +1,20 @@
 import os
 import easyocr
 import pandas as pd
+from fast_plate_ocr import ONNXPlateRecognizer
 from tqdm.notebook import tqdm
 
-def perform_ocr(split='val', processed=False, output_csv=False):
+def perform_ocr(split='val', processed=False, output_csv=False, engine='easyocr'):
     """
     Perform OCR on cropped images using EasyOCR and optionally save results to a CSV.
     """
     # Input directory for cropped images
     input_dir = f"cropped_images_processed/{split}" if processed else f"cropped_images/{split}"
     
-    # Initialize EasyOCR Reader once
-    reader = easyocr.Reader(['en'])  # Modify the language parameter as needed
-    
+    if engine == 'easyocr':
+        # Initialize EasyOCR Reader once
+        reader = easyocr.Reader(['en'])  # Modify the language parameter as needed
+
     # List to store OCR results
     ocr_results = []
     
@@ -23,9 +25,15 @@ def perform_ocr(split='val', processed=False, output_csv=False):
             image_path = os.path.join(input_dir, filename)
             
             try:
-                reader = easyocr.Reader(['en'])
-                result = reader.recognize(image_path, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ')
-                ocr_text = result[0][1].replace(' ', '').strip()
+                if engine == 'easyocr':
+                    reader = easyocr.Reader(['en'])
+                    result = reader.recognize(image_path, allowlist='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ')
+                    ocr_text = result[0][1].replace(' ', '').strip()
+                
+                elif engine == 'fast_plate_ocr':
+                    m = ONNXPlateRecognizer('european-plates-mobile-vit-v2-model')
+                    result = m.run(image_path)
+                    ocr_text = result[0].rstrip('_')
                 
                 # Store results
                 ocr_results.append({
