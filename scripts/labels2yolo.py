@@ -1,3 +1,6 @@
+# This file is based on code from UC3M-LP
+# Repository URL: https://github.com/ramajoballester/UC3M-LP
+
 import os
 import json
 import cv2

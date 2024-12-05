@@ -14,7 +14,6 @@ def main():
 
     # Iterate through train folder files
     for filename in os.listdir(train_path):
-        # Remove file extension to compare with val_filenames
         basename = os.path.splitext(filename)[0]
 
         # If the filename is in validation set

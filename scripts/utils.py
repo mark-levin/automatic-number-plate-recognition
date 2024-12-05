@@ -1,3 +1,6 @@
+# This file is fully copied from UC3M-LP
+# Repository URL: https://github.com/ramajoballester/UC3M-LP
+
 import os
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
